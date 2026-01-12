@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>สรุปผลการตรวจ</title>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-purple: #5f0e8a; 
+      --success-green: #27AE60;
+      --soft-gray: #f8fafc;
+      --text-gray: #64748b;
+    }
+
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+      background-color: #f4f7f9;
+      margin: 0; padding: 40px 20px;
+      font-size: 20px;
+      color: #334155;
+    }
+
+    .container {
+      max-width: 1000px; margin: auto;
+      background: white; padding: 50px;
+      border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    h1 {
+      text-align: center; color: var(--primary-purple);
+      font-size: 32px; font-weight: 700; margin-bottom: 40px;
+    }
+
+    /* ปุ่มย้อนกลับ */
+    .btn-back {
+      position: absolute;
+      top: 35px; left: 35px;
+      background: var(--soft-gray);
+      border: none; padding: 12px 24px;
+      border-radius: 12px; cursor: pointer;
+      font-family: 'Noto Sans Thai', sans-serif;
+      font-weight: 500; color: var(--text-gray);
+      display: flex; align-items: center; gap: 10px;
+      font-size: 16px; transition: all 0.2s ease;
+    }
+    .btn-back:hover { background: #e2e8f0; color: #1e293b; transform: translateX(-3px); }
+
+    .upload-box {
+      border: 2px dashed #cbd5e0; border-radius: 20px;
+      padding: 80px 40px; text-align: center; cursor: pointer;
+      transition: 0.3s; margin-bottom: 20px; color: var(--text-gray);
+    }
+    .upload-box:hover { border-color: var(--primary-purple); background: #fdfaff; color: var(--primary-purple); }
+
+    #upload-history-section {
+      margin-top: 50px; border-top: 1px solid #f1f5f9; padding-top: 30px;
+    }
+    .history-title { font-size: 16px; font-weight: 600; color: var(--text-gray); margin-bottom: 15px; }
+    .history-item {
+      display: flex; align-items: center; gap: 15px;
+      background: var(--soft-gray); padding: 15px 25px;
+      border-radius: 14px; margin-bottom: 12px;
+      font-size: 17px; color: #475569;
+    }
+    .history-item .dot { color: var(--success-green); font-size: 12px; }
+    .history-item .time { color: #94a3b8; font-size: 14px; margin-left: auto; }
+
+    .header-info {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 25px;
+      padding: 30px; background: var(--soft-gray); border-radius: 20px; margin-bottom: 30px;
+    }
+    .header-info label { font-size: 16px; font-weight: 600; color: var(--text-gray); margin-bottom: 8px; display: block; }
+    .header-info input { 
+      width: 100%; padding: 14px; border: 1px solid #e2e8f0; 
+      border-radius: 12px; font-size: 19px; font-family: 'Noto Sans Thai', sans-serif;
+      box-sizing: border-box; background: white;
+    }
+
+    .date-wrapper { position: relative; width: 100%; }
+    #inspect-date { position: relative; z-index: 2; background: transparent !important; color: transparent !important; cursor: pointer; border: 1px solid #e2e8f0; }
+    #inspect-date::-webkit-datetime-edit { color: transparent; }
+    #date-display-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 14px;
+      background: white; border-radius: 12px; font-size: 19px; 
+      display: flex; align-items: center; pointer-events: none; z-index: 1; box-sizing: border-box;
+    }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    td { padding: 20px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+    .item-name { font-weight: 500; color: #334155; width: 40%; font-size: 18px; line-height: 1.4; }
+    .data-input {
+      width: 100%; padding: 14px; border: 1px solid #e2e8f0;
+      border-radius: 10px; font-size: 18px; font-family: 'Noto Sans Thai', sans-serif;
+      box-sizing: border-box; transition: 0.2s; background: #fff;
+    }
+
+    .btn-save {
+      width: 100%; background: var(--primary-purple); color: white;
+      border: none; padding: 20px; border-radius: 16px;
+      font-size: 22px; font-weight: 600; cursor: pointer; margin-top: 40px;
+      font-family: 'Noto Sans Thai', sans-serif; transition: all 0.3s ease;
+    }
+    .btn-save:hover { background: #4a0a6d; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(95, 14, 138, 0.2); }
+
+    /* --- ส่วนหน้าจอ Success (แก้ไขใหม่ทั้งหมด) --- */
+    #overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.98); z-index: 10000;
+      flex-direction: column; justify-content: center; align-items: center;
+    }
+    
+    .success-container {
+      display: flex; flex-direction: column; align-items: center;
+      animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .success-icon-circle {
+      width: 120px; height: 120px;
+      background: var(--success-green);
+      border-radius: 50%;
+      display: flex; justify-content: center; align-items: center;
+      margin-bottom: 30px;
+      box-shadow: 0 15px 35px rgba(39, 174, 96, 0.25);
+    }
+
+    /* ใช้ SVG เพื่อความแม่นยำของรูปทรงและตำแหน่ง */
+    .checkmark-svg {
+      width: 60px; height: 60px;
+      fill: none; stroke: white;
+      stroke-width: 7; stroke-linecap: round; stroke-linejoin: round;
+      stroke-dasharray: 100; stroke-dashoffset: 100;
+      animation: drawCheck 0.6s ease-in-out forwards 0.3s;
+    }
+
+    @keyframes drawCheck { to { stroke-dashoffset: 0; } }
+    @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .spinner { border: 6px solid #f3f3f3; border-top: 6px solid var(--primary-purple); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
+  </style>
+</head>
+<body>
+
+<div id="overlay">
+  <div id="loading-box" class="spinner"></div>
+  <div id="success-box" class="success-container" style="display:none;">
+    <div class="success-icon-circle">
+      <svg class="checkmark-svg" viewBox="0 0 52 52">
+        <path d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
+    </div>
+    <div style="font-size: 30px; font-weight: 700; color: #1e293b; text-align: center;">บันทึกข้อมูลเรียบร้อยแล้ว</div>
+    <div style="font-size: 18px; color: var(--text-gray); margin-top: 12px; text-align: center;">ระบบกำลังกลับไปหน้าหลัก...</div>
+  </div>
+</div>
+
+<div class="container">
+  <div id="upload-page">
+    <h1>สรุปผลการตรวจ</h1>
+    <div class="upload-box" onclick="document.getElementById('excel-file').click()">
+      <div style="font-size: 60px; margin-bottom: 20px;">📂</div>
+      <p style="font-size: 20px;"><b>คลิกเพื่อเลือกไฟล์ Excel</b></p>
+      <p style="font-size: 16px; opacity: 0.7;">หรือลากไฟล์มาวางที่นี่</p>
+      <input type="file" id="excel-file" accept=".xlsx, .xls" style="display:none">
+    </div>
+    <div id="upload-history-section" style="display: none;">
+      <div class="history-title">อัปโหลดล่าสุดเมื่อเซสชั่นนี้</div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+  <div id="preview" style="display:none;">
+    <button class="btn-back" onclick="goBack()"><span>⬅</span> ย้อนกลับ</button>
+    <h1 style="margin-top: 20px;">ตรวจสอบความถูกต้อง</h1>
+    <div class="header-info">
+      <div class="input-box"><label>ชื่อสาขา</label><input type="text" id="branch-name"></div>
+      <div class="input-box">
+        <label>วันที่ตรวจ <span id="thai-date-display" style="font-size: 14px; color: var(--primary-purple); font-weight: normal;"></span></label>
+        <div class="date-wrapper">
+          <input type="date" id="inspect-date" onchange="updateThaiDisplay(this.value)">
+          <div id="date-display-overlay">วว/ดด/ปปปป</div>
+        </div>
+      </div>
+      <div class="input-box"><label>ผู้รับผิดชอบดูแล สนง</label><input type="text" id="staff-name"></div>
+      <div class="input-box"><label>พนักงานผู้ตรวจ</label><input type="text" id="inspector-name"></div>
+    </div>
+    <table><tbody id="table-rows"></tbody></table>
+    <button class="btn-save" onclick="saveData()">ยืนยัน ความถูกต้องและส่งข้อมูล</button>
+  </div>
+</div>
+
+<script>
+  // ส่วน Script เหมือนเดิมจากที่คุณมี แต่แก้ฟังก์ชัน saveData เล็กน้อยเพื่อให้แสดงแอนิเมชัน SVG
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKi4sohXVqAv18b70IWtZVL6a0ZAi8jSZda2zJqVmLZ2CwnWHFn2zqsLJoyo85_sFK/exec";
+  const FIELDS = [
+    { key: "safe", label: "1. ตู้นิรภัย, ตู้เหล็กเก็บเอกสาร", cells: ["G7", "B8"] },
+    { key: "cheque", label: "2. เช็คค้ำประกันประกอบการกู้", cells: ["G9", "B10"] },
+    { key: "cash", label: "3. เงินสดคงเหลือ", cells: ["G11"] },
+    { key: "car_pending", label: "4.2 เล่มทะเบียนรถยนต์-ระหว่างชำระ", cells: ["G14"] },
+    { key: "car_closed", label: "4.3 รถยนต์-ปิดบัญชียังไม่รับเล่ม", cells: ["G15"] },
+    { key: "moto_pending", label: "4.4 จยย.-ระหว่างชำระ", cells: ["G16"] },
+    { key: "moto_closed", label: "4.5 จยย.-ปิดบัญชี (หมายเหตุ)", cells: ["G17"] },
+    { key: "stock_count", label: "5.2 จำนวนรถตรงกับรายงาน", cells: ["G20"] },
+    { key: "stock_book", label: "5.3 จำนวนเล่มตรงกับรายงาน", cells: ["G21"] },
+    { key: "contract", label: "6. เอกสาร สัญญากู้", cells: ["G23"] },
+    { key: "tax_doc", label: "7. เอกสารฝ่ายภาษีและอื่นๆ", cells: ["G25"] },
+    { key: "office_tool", label: "8. อุปกรณ์เครื่องใช้สำนักงาน", cells: ["G27"] },
+    { key: "office_build", label: "9. อาคารสำนักงาน", cells: ["G29"] },
+    { key: "service", label: "10. พนักงานและการบริการ", cells: ["G31"] }
+  ];
+
+  window.onload = function() { renderHistory(); };
+
+  function renderHistory() {
+    const history = JSON.parse(localStorage.getItem('upload_history') || "[]");
+    const container = document.getElementById('upload-history-section');
+    const list = document.getElementById('history-list');
+    if (history.length > 0) {
+      container.style.display = 'block';
+      list.innerHTML = history.map(item => `
+        <div class="history-item">
+          <span class="dot">●</span>
+          <span style="font-weight:600;">${item.branch}</span>
+          <span class="time">${item.timestamp}</span>
+        </div>
+      `).join('');
+    }
+  }
+
+  function addToHistory(branch, timestamp) {
+    let history = JSON.parse(localStorage.getItem('upload_history') || "[]");
+    history.unshift({ branch, timestamp });
+    if (history.length > 10) history = history.slice(0, 10);
+    localStorage.setItem('upload_history', JSON.stringify(history));
+  }
+
+  function goBack() {
+    if(confirm("ต้องการละทิ้งการแก้ไข และกลับไปยังหน้าแรกหรือไม่")) {
+      document.getElementById('preview').style.display = 'none';
+      document.getElementById('upload-page').style.display = 'block';
+      document.getElementById('excel-file').value = '';
+    }
+  }
+
+  function updateThaiDisplay(dateVal) {
+    const displayThai = document.getElementById('thai-date-display');
+    const displayOverlay = document.getElementById('date-display-overlay');
+    if (!dateVal) { displayOverlay.innerText = "วว/ดด/ปปปป"; displayThai.innerText = ""; return; }
+    const d = new Date(dateVal);
+    const yearTh = d.getFullYear() + 543;
+    displayOverlay.innerText = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${yearTh}`;
+    displayThai.innerText = `(${d.getDate()} ${["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"][d.getMonth()]} ${yearTh})`;
+  }
+
+  document.getElementById('excel-file').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      try {
+        const workbook = XLSX.read(new Uint8Array(evt.target.result), {type: 'array', cellDates: true});
+        const sheet = workbook.Sheets["สรุปผลตรวจ"];
+        if(!sheet) { alert("ไม่พบชีตชื่อ 'สรุปผลตรวจ'"); return; }
+        const get = (c) => sheet[c] ? String(sheet[c].v).trim() : "";
+        document.getElementById('branch-name').value = get('E1');
+        let rawDate = sheet['E3'];
+        if (rawDate) {
+          let jsDate = (rawDate.t === 'n') ? new Date(Math.round((rawDate.v - 25569) * 86400 * 1000)) : rawDate.v;
+          const offset = jsDate.getTimezoneOffset() * 60000;
+          document.getElementById('inspect-date').value = new Date(jsDate.getTime() - offset).toISOString().split('T')[0];
+        }
+        updateThaiDisplay(document.getElementById('inspect-date').value);
+        document.getElementById('staff-name').value = get('D35');
+        document.getElementById('inspector-name').value = get('L35');
+        const tbody = document.getElementById('table-rows');
+        tbody.innerHTML = "";
+        FIELDS.forEach(f => {
+          const val = f.cells.map(c => get(c)).filter(v => v).join(" | ");
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td class="item-name">${f.label}</td><td><input type="text" class="data-input" value="${val}" id="in-${f.key}"></td>`;
+          tbody.appendChild(tr);
+        });
+        document.getElementById('upload-page').style.display = 'none';
+        document.getElementById('preview').style.display = 'block';
+      } catch (err) { alert("เกิดข้อผิดพลาดในการอ่านไฟล์"); }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+
+  async function saveData() {
+    const branch = document.getElementById('branch-name').value;
+    const time = new Date().toLocaleString('th-TH', { hour12: false });
+    const data = {
+      branch: branch,
+      staff: document.getElementById('staff-name').value,
+      inspector: document.getElementById('inspector-name').value,
+      timestamp: time
+    };
+    FIELDS.forEach(f => { data[f.key] = document.getElementById(`in-${f.key}`).value; });
+    
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('loading-box').style.display = 'block';
+    document.getElementById('success-box').style.display = 'none';
+
+    try {
+      await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+      addToHistory(branch, time);
+      
+      // แสดง Success Box
+      document.getElementById('loading-box').style.display = 'none';
+      document.getElementById('success-box').style.display = 'flex';
+      
+      setTimeout(() => location.reload(), 3000);
+    } catch (e) {
+      alert("ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่");
+      document.getElementById('overlay').style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>
