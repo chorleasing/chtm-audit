@@ -15,32 +15,46 @@
     .btn-back:hover { background: #e2e8f0; color: #1e293b; transform: translateX(-3px); }
     .upload-box { border: 2px dashed #cbd5e0; border-radius: 20px; padding: 80px 40px; text-align: center; cursor: pointer; transition: 0.3s; margin-bottom: 20px; color: var(--text-gray); }
     .upload-box:hover { border-color: var(--primary-purple); background: #fdfaff; color: var(--primary-purple); }
-    #upload-history-section { margin-top: 50px; border-top: 1px solid #f1f5f9; padding-top: 30px; }
-    .history-title { font-size: 16px; font-weight: 600; color: var(--text-gray); margin-bottom: 15px; }
-    .history-item { display: flex; align-items: center; gap: 15px; background: var(--soft-gray); padding: 15px 25px; border-radius: 14px; margin-bottom: 12px; font-size: 17px; color: #475569; }
-    .history-item .dot { color: var(--success-green); font-size: 12px; }
-    .history-item .time { color: #94a3b8; font-size: 14px; margin-left: auto; }
-    .header-info { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; padding: 30px; background: var(--soft-gray); border-radius: 20px; margin-bottom: 30px; }
-    .header-info label { font-size: 16px; font-weight: 600; color: var(--text-gray); margin-bottom: 8px; display: block; }
-    .header-info input { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 12px; font-size: 19px; font-family: 'Noto Sans Thai', sans-serif; box-sizing: border-box; background: white; }
+    
+    /* Header Info */
+    .header-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 25px; background: var(--soft-gray); border-radius: 20px; margin-bottom: 15px; }
+    .header-info label { font-size: 15px; font-weight: 600; color: var(--text-gray); margin-bottom: 6px; display: block; }
+    .header-info input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 18px; font-family: 'Noto Sans Thai', sans-serif; box-sizing: border-box; background: white; transition: 0.3s; }
+
+    /* Contract Zone */
+    .contract-zone { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px 25px; background: #fffbeb; border: 2px solid #fef3c7; border-radius: 20px; margin-bottom: 30px; }
+    .contract-zone label { font-size: 15px; font-weight: 700; color: #92400e; margin-bottom: 6px; display: block; }
+    .input-range-group { display: flex; align-items: center; gap: 10px; }
+    .input-range-group input { width: 100%; padding: 12px; border: 1px solid #fde68a; border-radius: 10px; font-size: 18px; font-family: 'Noto Sans Thai', sans-serif; box-sizing: border-box; background: white; color: #b45309; font-weight: 500; text-align: center; transition: 0.3s; }
+    .input-range-group span { font-weight: 600; color: #92400e; font-size: 16px; white-space: nowrap; }
+    .count-display { margin-top: 8px; font-size: 15px; font-weight: 600; color: #d97706; text-align: right; transition: 0.3s; }
+
     .date-wrapper { position: relative; width: 100%; }
     #inspect-date { position: relative; z-index: 2; background: transparent !important; color: transparent !important; cursor: pointer; border: 1px solid #e2e8f0; }
     #inspect-date::-webkit-datetime-edit { color: transparent; }
-    #date-display-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 14px; background: white; border-radius: 12px; font-size: 19px; display: flex; align-items: center; pointer-events: none; z-index: 1; box-sizing: border-box; }
+    #date-display-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; padding: 12px; background: white; border-radius: 10px; font-size: 18px; display: flex; align-items: center; pointer-events: none; z-index: 1; box-sizing: border-box; transition: 0.3s; }
+    
+    /* สไตล์สีแดงสำหรับแสดงข้อผิดพลาด (Validation) */
+    .invalid { border: 2px solid #e74c3c !important; background-color: #fdf2f0 !important; }
+    .invalid-text { color: #e74c3c !important; }
+
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    td { padding: 20px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
-    .item-name { font-weight: 500; color: #334155; width: 40%; font-size: 18px; line-height: 1.4; }
-    .data-input { width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 18px; font-family: 'Noto Sans Thai', sans-serif; box-sizing: border-box; transition: 0.2s; background: #fff; }
+    td { padding: 15px 10px; border-bottom: 1px solid #f1f5f9; vertical-align: top; }
+    .item-name { font-weight: 500; color: #334155; width: 40%; font-size: 17px; line-height: 1.4; }
+    .data-input { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 17px; font-family: 'Noto Sans Thai', sans-serif; box-sizing: border-box; transition: 0.2s; background: #fff; }
+    
     .btn-save { width: 100%; background: var(--primary-purple); color: white; border: none; padding: 20px; border-radius: 16px; font-size: 22px; font-weight: 600; cursor: pointer; margin-top: 40px; font-family: 'Noto Sans Thai', sans-serif; transition: all 0.3s ease; }
     .btn-save:hover { background: #4a0a6d; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(95, 14, 138, 0.2); }
+
+    /* Overlay & Loading */
     #overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.98); z-index: 10000; flex-direction: column; justify-content: center; align-items: center; }
     .success-container { display: flex; flex-direction: column; align-items: center; animation: scaleUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-    .success-icon-circle { width: 120px; height: 120px; background: var(--success-green); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 30px; box-shadow: 0 15px 35px rgba(39, 174, 96, 0.25); }
-    .checkmark-svg { width: 70px; height: 70px; fill: none; stroke: white; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: drawCheck 0.6s ease-out forwards 0.3s; }
+    .success-icon-circle { width: 100px; height: 100px; background: var(--success-green); border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-bottom: 25px; }
+    .checkmark-svg { width: 60px; height: 60px; fill: none; stroke: white; stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 100; stroke-dashoffset: 100; animation: drawCheck 0.6s ease-out forwards 0.3s; }
     @keyframes drawCheck { to { stroke-dashoffset: 0; } }
     @keyframes scaleUp { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .spinner { border: 6px solid #f3f3f3; border-top: 6px solid var(--primary-purple); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    .spinner { border: 6px solid #f3f3f3; border-top: 6px solid var(--primary-purple); border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; }
   </style>
 </head>
 <body>
@@ -51,8 +65,8 @@
     <div class="success-icon-circle">
       <svg class="checkmark-svg" viewBox="0 0 52 52"><path d="M12 26 L22 36 L40 16" /></svg>
     </div>
-    <div style="font-size: 30px; font-weight: 700; color: #1e293b; text-align: center;">บันทึกข้อมูลเรียบร้อยแล้ว</div>
-    <div style="font-size: 18px; color: var(--text-gray); margin-top: 12px; text-align: center;">ระบบกำลังส่งข้อมูลไปที่ LINE...</div>
+    <div style="font-size: 26px; font-weight: 700; color: #1e293b; text-align: center;">บันทึกข้อมูลเรียบร้อยแล้ว</div>
+    <div style="font-size: 16px; color: var(--text-gray); margin-top: 10px;">ระบบกำลังส่งข้อมูลไปที่ LINE...</div>
   </div>
 </div>
 
@@ -64,33 +78,54 @@
       <p><b>คลิกเพื่อเลือกไฟล์ Excel</b></p>
       <input type="file" id="excel-file" accept=".xlsx, .xls" style="display:none">
     </div>
-    <div id="upload-history-section" style="display: none;">
-      <div class="history-title">อัปโหลดล่าสุด</div>
-      <div id="history-list"></div>
-    </div>
   </div>
 
   <div id="preview" style="display:none;">
-    <button class="btn-back" onclick="goBack()">⬅ ย้อนกลับ</button>
+    <button class="btn-back" onclick="location.reload()">⬅ ย้อนกลับ</button>
     <h1>ตรวจสอบความถูกต้อง</h1>
+    
     <div class="header-info">
-      <div><label>ชื่อสาขา</label><input type="text" id="branch-name"></div>
-      <div><label>วันที่ตรวจ <span id="thai-date-display" style="font-size:14px; color:var(--primary-purple);"></span></label>
+      <div><label>ชื่อสาขา</label><input type="text" id="branch-name" oninput="checkRequired('branch-name')"></div>
+      <div><label>วันที่ตรวจ <span id="thai-date-display" style="font-size:13px; color:var(--primary-purple);"></span></label>
         <div class="date-wrapper">
           <input type="date" id="inspect-date" onchange="updateThaiDisplay(this.value)">
           <div id="date-display-overlay">วว/ดด/ปปปป</div>
         </div>
       </div>
-      <div><label>ผู้รับผิดชอบ</label><input type="text" id="staff-name"></div>
-      <div><label>ผู้ตรวจ</label><input type="text" id="inspector-name"></div>
+      <div><label>ผู้รับผิดชอบ</label><input type="text" id="staff-name" oninput="checkRequired('staff-name')"></div>
+      <div><label>ผู้ตรวจ</label><input type="text" id="inspector-name" oninput="checkRequired('inspector-name')"></div>
     </div>
+
+    <div class="contract-zone">
+      <div>
+        <label>เลขสัญญารถยนต์ (รหัสสัญญา-เลขท้าย)</label>
+        <div class="input-range-group">
+          <input type="text" id="car-contract-start" placeholder="J13" oninput="validateContract('car')">
+          <span>ถึง</span>
+          <input type="text" id="car-contract-end" placeholder="L13" oninput="validateContract('car')">
+        </div>
+        <div class="count-display">ตรวจทั้งหมด: <span id="car-count">0</span> สัญญา</div>
+      </div>
+      <div>
+        <label>เลขสัญญา จยย. (รหัสสัญญา-เลขท้าย)</label>
+        <div class="input-range-group">
+          <input type="text" id="moto-contract-start" placeholder="O13" oninput="validateContract('moto')">
+          <span>ถึง</span>
+          <input type="text" id="moto-contract-end" placeholder="Q13" oninput="validateContract('moto')">
+        </div>
+        <div class="count-display">ตรวจทั้งหมด: <span id="moto-count">0</span> สัญญา</div>
+      </div>
+    </div>
+
     <table><tbody id="table-rows"></tbody></table>
+    
     <button class="btn-save" onclick="saveData()">ยืนยันและส่งข้อมูล</button>
   </div>
 </div>
 
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxv8dAQnWbplTerge68CreYcqL5QaKFA5AVp-soMYBfjonC_DW37JB6Y-SKyQd-8CEW/exec"; 
+  
   const FIELDS = [
     { key: "safe", label: "1. ตู้นิรภัย", cells: ["G7", "B8"] },
     { key: "cheque", label: "2. เช็คค้ำประกัน", cells: ["G9", "B10"] },
@@ -108,14 +143,94 @@
     { key: "service", label: "10. พนักงานและการบริการ", cells: ["G31"] }
   ];
 
+  // ฟังก์ชันเช็คช่องว่างทั่วไป
+  function checkRequired(id) {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) {
+      el.classList.add('invalid');
+      return false;
+    } else {
+      el.classList.remove('invalid');
+      return true;
+    }
+  }
+
+  // ฟังก์ชันเช็ควันที่
+  function checkDate() {
+    const dateInput = document.getElementById('inspect-date');
+    const dateOverlay = document.getElementById('date-display-overlay');
+    if (!dateInput.value) {
+      dateOverlay.classList.add('invalid');
+      return false;
+    } else {
+      dateOverlay.classList.remove('invalid');
+      return true;
+    }
+  }
+
   function updateThaiDisplay(dateVal) {
     const displayThai = document.getElementById('thai-date-display');
     const displayOverlay = document.getElementById('date-display-overlay');
+    checkDate(); // ตรวจสอบความถูกต้องทุกครั้งที่เปลี่ยนวันที่
     if (!dateVal) { displayOverlay.innerText = "วว/ดด/ปปปป"; return; }
     const d = new Date(dateVal);
     const yearTh = d.getFullYear() + 543;
     displayOverlay.innerText = `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${yearTh}`;
     displayThai.innerText = `(${d.getDate()} ${["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"][d.getMonth()]} ${yearTh})`;
+  }
+
+  // ฟังก์ชันคำนวณและตรวจสอบช่องสัญญา
+  function validateContract(type) {
+    const startEl = document.getElementById(`${type}-contract-start`);
+    const endEl = document.getElementById(`${type}-contract-end`);
+    const countSpan = document.getElementById(`${type}-count`);
+    
+    const startStr = startEl.value.trim();
+    const endStr = endEl.value.trim();
+
+    // กรณีปล่อยว่างทั้งคู่ ถือว่าไม่มีสัญญา (0) ข้อมูลถูกต้อง
+    if (!startStr && !endStr) {
+      countSpan.innerText = "0";
+      countSpan.classList.remove('invalid-text');
+      startEl.classList.remove('invalid');
+      endEl.classList.remove('invalid');
+      return true;
+    }
+
+    // คำนวณ
+    const startParts = startStr.split('-');
+    const endParts = endStr.split('-');
+    let count = 0;
+    let isValid = true;
+
+    if (startParts.length < 2 || endParts.length < 2) {
+      isValid = false;
+    } else {
+      const startNum = parseInt(startParts[startParts.length - 1], 10);
+      const endNum = parseInt(endParts[endParts.length - 1], 10);
+      
+      if (isNaN(startNum) || isNaN(endNum)) {
+        isValid = false;
+      } else {
+        count = endNum - startNum + 1;
+        if (count <= 0) isValid = false; // ถ้าติดลบ หรือได้ 0 ให้เป็นสีแดง
+      }
+    }
+
+    // แสดงผล
+    if (!isValid) {
+      countSpan.innerText = count <= 0 ? count : "รูปแบบผิดพลาด";
+      countSpan.classList.add('invalid-text');
+      startEl.classList.add('invalid');
+      endEl.classList.add('invalid');
+      return false;
+    } else {
+      countSpan.innerText = count;
+      countSpan.classList.remove('invalid-text');
+      startEl.classList.remove('invalid');
+      endEl.classList.remove('invalid');
+      return true;
+    }
   }
 
   document.getElementById('excel-file').addEventListener('change', function(e) {
@@ -125,7 +240,11 @@
       const workbook = XLSX.read(new Uint8Array(evt.target.result), {type: 'array', cellDates: true});
       const sheet = workbook.Sheets["สรุปผลตรวจ"];
       if(!sheet) { alert("ไม่พบชีต 'สรุปผลตรวจ'"); return; }
-      const get = (c) => sheet[c] ? String(sheet[c].v).trim() : "";
+      
+      const get = (c) => {
+        let val = sheet[c] ? String(sheet[c].v).trim() : "";
+        return (val === "0" || val === "undefined") ? "" : val;
+      };
       
       document.getElementById('branch-name').value = get('E1');
       let rawDate = sheet['E3'];
@@ -136,7 +255,21 @@
       updateThaiDisplay(document.getElementById('inspect-date').value);
       document.getElementById('staff-name').value = get('D35');
       document.getElementById('inspector-name').value = get('L35');
+
+      document.getElementById('car-contract-start').value = get('J13');
+      document.getElementById('car-contract-end').value = get('L13');
+      validateContract('car');
+
+      document.getElementById('moto-contract-start').value = get('O13');
+      document.getElementById('moto-contract-end').value = get('Q13');
+      validateContract('moto');
       
+      // ตรวจสอบช่อง Header ทั่วไปหลังดึงข้อมูลมาใส่
+      checkRequired('branch-name');
+      checkRequired('staff-name');
+      checkRequired('inspector-name');
+      checkDate();
+
       const tbody = document.getElementById('table-rows');
       tbody.innerHTML = "";
       FIELDS.forEach(f => {
@@ -145,6 +278,7 @@
         tr.innerHTML = `<td class="item-name">${f.label}</td><td><input type="text" class="data-input" value="${val}" id="in-${f.key}"></td>`;
         tbody.appendChild(tr);
       });
+
       document.getElementById('upload-page').style.display = 'none';
       document.getElementById('preview').style.display = 'block';
     };
@@ -152,12 +286,39 @@
   });
 
   async function saveData() {
+    // 1. กดปุ่มส่งปุ๊บ สั่งเช็คข้อมูลทั้งหมดก่อน
+    const isBranchValid = checkRequired('branch-name');
+    const isDateValid = checkDate();
+    const isStaffValid = checkRequired('staff-name');
+    const isInspectorValid = checkRequired('inspector-name');
+    const isCarValid = validateContract('car');
+    const isMotoValid = validateContract('moto');
+
+    // 2. ถ้ามีข้อมูลช่องไหนผิดพลาด ให้หยุดการทำงานและแจ้งเตือน
+    if (!isBranchValid || !isDateValid || !isStaffValid || !isInspectorValid || !isCarValid || !isMotoValid) {
+      alert("⚠️ กรุณาตรวจสอบและแก้ไขข้อมูลในช่องที่ไฮไลท์สีแดงให้ถูกต้องก่อนทำการบันทึกค่ะ");
+      return; 
+    }
+
+    // 3. ถ้าผ่านเงื่อนไขหมดแล้ว ก็จัดเก็บข้อมูลตามปกติ
+    const getRangeText = (startId, endId) => {
+      const start = document.getElementById(startId).value.trim();
+      const end = document.getElementById(endId).value.trim();
+      if (start && end) return `${start} ถึง ${end}`;
+      return start || end || "";
+    };
+
     const data = {
       branch: document.getElementById('branch-name').value,
       inspect_date: document.getElementById('date-display-overlay').innerText,
       staff: document.getElementById('staff-name').value,
-      inspector: document.getElementById('inspector-name').value
+      inspector: document.getElementById('inspector-name').value,
+      car_contract_no: getRangeText('car-contract-start', 'car-contract-end'),
+      moto_contract_no: getRangeText('moto-contract-start', 'moto-contract-end'),
+      car_contract_count: document.getElementById('car-count').innerText,
+      moto_contract_count: document.getElementById('moto-count').innerText
     };
+    
     FIELDS.forEach(f => { data[f.key] = document.getElementById(`in-${f.key}`).value; });
 
     document.getElementById('overlay').style.display = 'flex';
@@ -167,7 +328,7 @@
       document.getElementById('success-box').style.display = 'flex';
       setTimeout(() => location.reload(), 3000);
     } catch (e) {
-      alert("Error!");
+      alert("เกิดข้อผิดพลาดในการบันทึก!");
       document.getElementById('overlay').style.display = 'none';
     }
   }
